@@ -1,0 +1,9 @@
+// 11-loop_photo.scss
+
+@import 'names';
+
+@each $name in $list-names {
+  .#{ $name }-background {
+    background-image: map-get($background-images, $name);
+  }
+}
