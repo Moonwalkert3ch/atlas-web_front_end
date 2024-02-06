@@ -4,7 +4,7 @@ body {
     color: #3D3D3D;
 
     .red {
-      &:first-child {
+      & > body {
         color: #FF0000;
       }
     }
