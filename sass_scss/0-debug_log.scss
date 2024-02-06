@@ -1,0 +1,7 @@
+// styles.scss
+
+$message: "Hello world";
+
+body {
+  @debug $message;
+}
