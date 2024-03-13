@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Page Title</title>
+    <!-- You can add additional meta tags, stylesheets, or scripts in the head section -->
+</head>
+<body>
+    <script>
+ // closure scope chain
+
+let globalVariable = "Welcome";
+
+function outer() {
+    alert(globalVariable);
+
+    let course = "Holberton";
+
+    function inner()  {
+        alert(globalVariable + " " + course);
+
+        let exclamation = "!";
+
+        function inception() {
+            alert(globalVariable + " " + course + exclamation);
+        }
+
+        inception();
+    }
+
+    inner();
+}
+
+outer();
+    </script>
+</body>
+</html>
