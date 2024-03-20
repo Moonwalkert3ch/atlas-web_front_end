@@ -14,33 +14,13 @@
 <body>
     <script type="application/javascript">
         function createFamilyTree() {
-            const htmlTable = '<table>' +
-                                '<thead>' +
-                                    '<tr>' +
-                                        '<th>Firstname</th>' +
-                                        '<th>Lastname</th>' +
-                                    '</tr>' +
-                                '</thead>' +
-                                '<tbody>' +
-                                    '<tr>' +
-                                        '<td>Guillaume</td>' +
-                                        '<td>Salva</td>' +
-                                    '</tr>' +
-                                    '<tr>' +
-                                        '<td>Paulette</td>' +
-                                        '<td>Salva</td>' +
-                                    '</tr>' +
-                                    '<tr>' +
-                                        '<td>Antoine</td>' +
-                                        '<td>Salva</td>' +
-                                    '</tr>' +
-                                '</tbody>' +
-                            '</table>';
-
-            $('body').append(htmlTable);
-        }
-
-        createFamilyTree();
+            const $htmlTable = $( "<table><tr><th>Firstname</th><th>Lastname</th></tr><tr><td>Guillaume</td><td>Salva</td></tr><tr><td>Paulette</td><td>Salva</td><tr><td>Antoine</td><td>Salva</td></tr>");
+            
+            $( "body" ).append( $htmlTable);
+            };
+        $(function () {
+            createFamilyTree();
+        });
     </script>
 </body>
 

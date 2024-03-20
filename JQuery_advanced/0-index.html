@@ -13,15 +13,13 @@
   crossorigin="anonymous"></script>
 
     <script type="application/javascript">
-        function checkJQuery() {
-            if (typeof jQuery !== 'undefined') {
+        window.onload = function() {
+            if (window.jQuery) {
                 console.log('jQuery has been loaded correctly');
             } else {
                 console.log('jQuery has not been loaded correctly');
             }
         }
-
-        document.addEventListener('DOMContentLoaded', checkJQuery);
     </script>
 </body>
 

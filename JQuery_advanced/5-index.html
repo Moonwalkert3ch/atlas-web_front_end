@@ -20,38 +20,36 @@
 <body>
     <script type="application/javascript">
         function createFamilyTree() {
-            const $table = $('<table>').append(
-                $('<thead>').append(
-                    $('<tr>').append(
-                        $('<th>').text('Firstname'),
-                        $('<th>').text('Lastname'),
-                        $('<th>').text('')
-                    )
-                ),
-                $('<tbody>')
-            );
-            $('body').append($table);
-        }
+            $('body').append('<table></table>');
+            $('table').append('<thead></thead>');
+            $('thead').append('<tr></tr>');
+            $('thead > tr').append('<th></th>');
+            $('thead > tr').append('<th></th>');
+            $('thead > tr > th:first').text('Firstname');
+            $('thead > tr > th:last').text('Lastname');
+            $('table').append('<tbody></tbody>');
+        };
 
-        createFamilyTree();
+        function addNewMember (firstName, lastName) {
+            $('tbody').append('<tr></tr>');
+            $('tbody > tr:last').append('<td></td>', '<td></td>', '<td></td>');
+            $('tbody > tr:last > td:nth-of-type(1)').text(firstName);
+            $('tbody > tr:last > td:nth-of-type(2)').text(lastName);
+            $('tbody > tr:last > td:nth-of-type(3)').text('(x)');
+            $('tbody > tr:last > td:nth-of-type(3)').css('backgroundColor', 'orange');
+            $('tbody > tr:last > td:nth-of-type(3)').click(function () {
+            $(this).parent().remove();
+                });
+        };
 
-        function addNewMember(firstName, lastName) {
-            const $row = $('<tr>').append(
-                $('<td>').text(firstName),
-                $('<td>').text(lastName),
-                $('<td>').addClass('delete-row').text('(x)')
-            );
-            $('tbody').append($row);
-            $row.find('.delete-row').click(function() {
-                $(this).closest('tr').remove();
-            });
-        }
-
-        addNewMember('Guillaume', 'Salva');
-        addNewMember('Arielle', 'Snizt');
-        addNewMember('Fanette', 'Snizt');
-        addNewMember('Gerard', 'Snizt');
-        addNewMember('Victor', 'Salva');
+        $(function () {
+            createFamilyTree();
+            addNewMember('Guillaume', 'Salva');
+            addNewMember('Arielle', 'Snizt');
+            addNewMember('Fanette', 'Snizt');
+            addNewMember('Gerard', 'Snizt');
+            addNewMember('Victor', 'Salva');
+        });
     </script>
 </body>
 
