@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Task 0</title>
+
+
+    <script
+    src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
+    integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8="
+    crossorigin="anonymous">
+    </script>
+
+<script type="application/javascript">
+
+    function addPostRow (data) {
+        $('body').append(`<p><span>Post created with id ${data.id}, title: ${data.title}, author: ${data.author}</span></p>`);
+    }
+
+    function listPosts () { 
+        $.get('http://localhost:5500/posts')
+        .then(function (data) {
+            data.forEach(function (item) {
+                addPostRow(item);
+            })
+        })
+        .catch(function () {
+            window.alert('Server Error');
+        })
+    }
+
+    function buildForm () {
+        $('body').append(`<form><div><label for="author">Author</label><input type="text" id="author"></div><div><label for="title">Title</label><textarea id="title"></textarea></div><input type="submit" id="submit-btn"></form>`);
+        $('#submit-btn').click(sendForm);
+    }
+
+    function sendForm (e) {
+        e.preventDefault();
+
+        const title = $('#title').val();
+        const author = $('#author').val();
+                
+        $('form').after('<p>About to send the query to the API</p>');
+
+        const data = {title,author};
+
+        console.log(data);
+
+        $.post('http://localhost:3000/posts', data)
+        .then(function (res) {
+                    
+            console.log('success'); // window.reload();
+        })
+        .catch(function () {
+            console.log('Error sending the POST query');
+        })
+                
+        return false;
+    }
+
+    function deletePost(id){
+        console.log(id);
+        $.ajax({ url: "http://localhost:3000/posts/" + id, type: "DELETE", success: function () {
+            $("#row-" + id).remove();
+        },
+        error: function () { alert("Post was not deleted");}
+        });
+    }
+    
+    $(document).ready(function () {
+        buildForm();
+        listPosts();
+    });
+</script>
