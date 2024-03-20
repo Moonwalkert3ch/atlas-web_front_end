@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Task 0</title>
+
+    <script
+    src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
+    integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8="
+    crossorigin="anonymous"></script>
+    <style>
+        .delete-row {
+            background-color: orange;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <script type="application/javascript">
+
+        function createSearchForm() {
+
+            $('body').append(
+                $('<input>').attr('type', 'text'),
+                $('<input>').attr({ type: 'submit', value: 'Search' }),
+                $('<ul>')
+            );
+
+ 
+            $('input[type="submit"]').click(function(value) {
+                value.preventDefault();
+                const searchText = $('input[type="text"]').val();
+                queryWikipedia(searchText);
+            });
+        }
+
+        $(document).ready(function() {
+            createSearchForm();
+        });
+
+        // Function to add a new article to the list
+        function addNewArticle(id, title, snippet) {
+            const $li = $('<li>');
+            // Create first paragraph with span and b elements
+            const $titlePara = $('<p>').html('<span>' + id + ' - </span><b>' + title + '</b>');
+            // Create second paragraph with snippet
+            const $snippetPara = $('<p>').html(snippet);
+            // Append paragraphs to li
+            $li.append($titlePara, $snippetPara);
+            // Append li to ul
+            $('ul').append($li);
+        }
+
+        function queryWikipedia(search) {
+            const apiUrl = 'https://en.wikipedia.org/w/api.php';
+
+            const params = {
+                action: 'query',
+                list: 'search',
+                srsearch: search,
+                format: 'json',
+                origin: '*'
+            };
+ 
+            $.ajax({
+                url: apiUrl,
+                data: params,
+                dataType: 'json',
+                success: function(response) {
+                    const results = response.query.search;
+
+                    results.forEach(function(result) {
+                        addNewArticle(result.pageid, result.title, result.snippet);
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error querying Wikipedia API:', error);
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
