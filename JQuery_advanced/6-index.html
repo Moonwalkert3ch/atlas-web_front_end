@@ -4,7 +4,6 @@
 <head>
     <meta charset="utf-8" />
     <title>Task 0</title>
-    <!-- Include jQuery -->
     <script
   src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
   integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8="
@@ -19,10 +18,8 @@
 
 <body>
     <script type="application/javascript">
-        // Function to create family tree table
         function createFamilyTree() {
-            // Create an empty table with header
-            var $table = $('<table>').append(
+            const $table = $('<table>').append(
                 $('<thead>').append(
                     $('<tr>').append(
                         $('<th>').text('Firstname'),
@@ -32,61 +29,48 @@
                 ),
                 $('<tbody>')
             );
-            // Append table to body
+
             $('body').prepend($table);
         }
 
-        // Call the createFamilyTree function
         createFamilyTree();
 
-        // Function to create form
         function createForm() {
-            // Create form elements
-            var $inputBefore = $('<input>').attr('type', 'text');
-            var $inputAfter = $('<input>').attr('type', 'text');
-            var $select = $('<select>').append(
+            const $inputBefore = $('<input>').attr('type', 'text');
+            const $inputAfter = $('<input>').attr('type', 'text');
+            const $select = $('<select>').append(
                 $('<option>').attr('value', 'before').text('Before'),
                 $('<option>').attr('value', 'after').text('After')
             );
-            var $submit = $('<input>').attr({ type: 'submit', value: 'Submit' });
+            const $submit = $('<input>').attr({ type: 'submit', value: 'Submit' });
 
-            // Append form elements before the table
             $('table').before($inputBefore, $inputAfter, $select, $submit);
 
-            // Add click event to submit button
-            $submit.click(function(e) {
-                e.preventDefault();
-                // Determine position based on select value
-                var position = $select.val();
-                // Call addNewMember function with input values and position
+            $submit.click(function(value) {
+                value.preventDefault();
+                const position = $select.val();
                 addNewMember($inputBefore.val(), $inputAfter.val(), position);
             });
         }
 
-        // Call the createForm function
         createForm();
 
-        // Function to add a new member to the family tree
         function addNewMember(firstName, lastName, position) {
-            // Create a new row with first and last name cells
-            var $row = $('<tr>').append(
+            const $row = $('<tr>').append(
                 $('<td>').text(firstName),
                 $('<td>').text(lastName),
                 $('<td>').addClass('delete-row').text('(x)')
             );
-            // Add click event to delete row
             $row.find('.delete-row').click(function() {
                 $(this).closest('tr').remove();
             });
-            // Determine where to add the row based on position
             if (position === 'before') {
-                $('tbody').prepend($row); // Add row at the top
+                $('tbody').prepend($row);
             } else {
-                $('tbody').append($row); // Add row at the bottom
+                $('tbody').append($row);
             }
         }
 
-        // Add new members to the family tree
         addNewMember('Guillaume', 'Salva', 'before');
         addNewMember('Arielle', 'Snizt', 'after');
         addNewMember('Fanette', 'Snizt', 'after');

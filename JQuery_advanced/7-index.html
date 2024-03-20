@@ -40,16 +40,11 @@
             createSearchForm();
         });
 
-        // Function to add a new article to the list
         function addNewArticle(id, title, snippet) {
             const $li = $('<li>');
-            // Create first paragraph with span and b elements
             const $titlePara = $('<p>').html('<span>' + id + ' - </span><b>' + title + '</b>');
-            // Create second paragraph with snippet
             const $snippetPara = $('<p>').html(snippet);
-            // Append paragraphs to li
             $li.append($titlePara, $snippetPara);
-            // Append li to ul
             $('ul').append($li);
         }
 

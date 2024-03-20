@@ -19,10 +19,8 @@
 
 <body>
     <script type="application/javascript">
-        // Function to create family tree table
         function createFamilyTree() {
-            // Create an empty table with header
-            var $table = $('<table>').append(
+            const $table = $('<table>').append(
                 $('<thead>').append(
                     $('<tr>').append(
                         $('<th>').text('Firstname'),
@@ -32,30 +30,23 @@
                 ),
                 $('<tbody>')
             );
-            // Append table to body
             $('body').append($table);
         }
 
-        // Call the createFamilyTree function
         createFamilyTree();
 
-        // Function to add a new member to the family tree
         function addNewMember(firstName, lastName) {
-            // Create a new row with first and last name cells
-            var $row = $('<tr>').append(
+            const $row = $('<tr>').append(
                 $('<td>').text(firstName),
                 $('<td>').text(lastName),
                 $('<td>').addClass('delete-row').text('(x)')
             );
-            // Append row to the table body
             $('tbody').append($row);
-            // Add click event to delete row
             $row.find('.delete-row').click(function() {
                 $(this).closest('tr').remove();
             });
         }
 
-        // Add new members to the family tree
         addNewMember('Guillaume', 'Salva');
         addNewMember('Arielle', 'Snizt');
         addNewMember('Fanette', 'Snizt');
