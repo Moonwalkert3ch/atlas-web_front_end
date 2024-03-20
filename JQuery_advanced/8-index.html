@@ -14,6 +14,22 @@
             background-color: orange;
             cursor: pointer;
         }
+
+        #pagination {
+            list-style-type: none;
+            padding: 0;
+            margin: 10px 0;
+            display: flex;
+        }
+
+        #pagination li {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        #pagination li.active {
+            font-weight: bold;
+        }
     </style>
 </head>
 
@@ -21,14 +37,13 @@
     <script type="application/javascript">
 
         function createSearchForm() {
-
             $('body').append(
                 $('<input>').attr('type', 'text'),
                 $('<input>').attr({ type: 'submit', value: 'Search' }),
-                $('<ul>')
+                $('<ul>'),
+                $('<ul>').attr('id', 'pagination')
             );
 
- 
             $('input[type="submit"]').click(function(values) {
                 values.preventDefault();
                 const searchText = $('input[type="text"]').val();
@@ -48,24 +63,42 @@
             $('ul').append($li);
         }
 
-        function queryWikipedia(search) {
+        function buildPagination(numberOfItems, itemsPerPage, currentOffset) {
+            const totalPages = Math.ceil(numberOfItems / itemsPerPage);
+            const $pagination = $('#pagination').empty();
+            for (let i = 0; i < totalPages; i++) {
+                const $li = $('<li>').text(i + 1).click(function() {
+                    queryWikipedia($('input[type="text"]').val(), i * itemsPerPage);
+                });
+                if (i * itemsPerPage === currentOffset) {
+                    $li.addClass('active');
+                }
+                $pagination.append($li);
+            }
+        }
+
+        function queryWikipedia(search, offset = 0) {
             const apiUrl = 'https://en.wikipedia.org/w/api.php';
+            const itemsPerPage = 10;
 
             const params = {
                 action: 'query',
                 list: 'search',
                 srsearch: search,
+                sroffset: offset,
                 format: 'json',
                 origin: '*'
             };
- 
+
             $.ajax({
                 url: apiUrl,
                 data: params,
                 dataType: 'json',
                 success: function(response) {
+                    const totalHits = response.query.searchinfo.totalhits;
                     const results = response.query.search;
-
+                    buildPagination(totalHits, itemsPerPage, offset);
+                    $('ul').empty();
                     results.forEach(function(result) {
                         addNewArticle(result.pageid, result.title, result.snippet);
                     });
