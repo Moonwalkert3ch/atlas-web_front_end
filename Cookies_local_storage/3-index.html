@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Management</title>
+</head>
+
+<body>
+    <div id="login-form" style="display: none;">
+        <h2>Login to the website</h2>
+        <input type="text" id="firstname" placeholder="Firstname">
+        <input type="text" id="email" placeholder="Email">
+        <button onclick="setCookies()" id="login-btn">Log me in</button>
+    </div>
+
+    <h1 id="welcome-msg"></h1>
+
+    <h1>Cookies</h1>
+    <button onclick="showCookies()" id="cookies-btn">Show the cookies</button>
+
+    <script>
+        function setCookies() {
+            const firstname = document.getElementById('firstname').value;
+            const email = document.getElementById('email').value;
+
+            const expirationDate = new Date();
+            expirationDate.setTime(expirationDate.getTime() + (10 * 24 * 60 * 60 * 1000));
+            const expires = expirationDate.toUTCString();
+
+            document.cookie = `firstname=${firstname}; expires=${expires}`;
+            document.cookie = `email=${email}; expires=${expires}`;
+
+            showWelcomeMessageOrForm();
+        }
+
+        function showCookies() {
+            const cookies = document.cookie.split(';');
+            const paragraph = document.createElement('p');
+            paragraph.innerHTML = 'Cookies: ';
+            cookies.forEach(cookie => {
+                const [name, value] = cookie.trim().split('=');
+                paragraph.innerHTML += `${name}: ${value}, `;
+            });
+            document.body.appendChild(paragraph);
+        }
+
+        function getCookie(name) {
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                const [cookieName, cookieValue] = cookie.trim().split('=');
+                if (cookieName === name) {
+                    return cookieValue;
+                }
+            }
+            return '';
+        }
+
+        function showForm() {
+            const welcomeMsg = document.getElementById('welcome-msg');
+            if (welcomeMsg) {
+                welcomeMsg.remove();
+            }
+            document.getElementById('login-form').style.display = 'block';
+        }
+
+        function hideForm() {
+            document.getElementById('login-form').style.display = 'none';
+        }
+
+        function deleteCookiesAndShowForm() {
+            const current = new Date().toUTCString();
+
+            document.cookie = 'firstname=; expires=${current}';
+            document.cookie = 'email=; expires=${current}';
+            showForm();
+        }
+
+        function showWelcomeMessageOrForm() {
+            const firstname = getCookie('firstname');
+            if (firstname) {
+                const welcomeDiv = document.createElement('div');
+                welcomeDiv.id = 'welcome-msg';
+                welcomeDiv.textContent = `Welcome ${firstname} `;
+                const logoutLink = document.createElement('a');
+                logoutLink.href = '#';
+                logoutLink.textContent = '(logout)';
+                logoutLink.style.fontStyle = 'italic';
+                logoutLink.style.fontWeight = 'normal';
+                logoutLink.style.marginLeft = '10px';
+                logoutLink.onclick = function() {
+                    deleteCookiesAndShowForm();
+                    welcomeMsg.remove();
+                    return false;
+                };
+                welcomeDiv.appendChild(logoutLink);
+                document.body.innerHTML = '';
+                document.body.appendChild(welcomeDiv);
+            } else {
+                showForm();
+            }
+        }
+
+        showWelcomeMessageOrForm();
+    </script>
+</body>
+
+</html>
