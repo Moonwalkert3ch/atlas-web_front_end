@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cookie Management</title>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/src/js.cookie.min.js"></script>
 </head>
 
 <body>
@@ -12,7 +13,7 @@
         <h2>Login to the website</h2>
         <input type="text" id="firstname" placeholder="Firstname">
         <input type="text" id="email" placeholder="Email">
-        <button onclick="setCookies()" id="login-btn">Log me in</button>
+        <button onclick="setCookiesAndShowWelcomeMessage()" id="login-btn">Log me in</button>
     </div>
 
     <div id="welcome-msg"></h1>
@@ -21,7 +22,7 @@
     <button onclick="showCookies()" id="cookies-btn">Show the cookies</button>
 
     <script>
-        function setCookies() {
+        function setCookiesAndShowWelcomeMessage() {
             const firstname = document.getElementById('firstname').value;
             const email = document.getElementById('email').value;
 
@@ -29,8 +30,8 @@
             expirationDate.setTime(expirationDate.getTime() + (10 * 24 * 60 * 60 * 1000));
             const expires = expirationDate.toUTCString();
 
-            document.cookie = `firstname=${firstname}; expires=${expires}`;
-            document.cookie = `email=${email}; expires=${expires}`;
+            Cookies.set('firstname', firstname, { expires: 10 });
+            Cookies.set('email', email, { expires: 10 });
 
             showWelcomeMessageOrForm();
         }
@@ -46,17 +47,6 @@
             document.body.appendChild(paragraph);
         }
 
-        function getCookie(name) {
-            const cookies = document.cookie.split(';');
-            for (let cookie of cookies) {
-                const [cookieName, cookieValue] = cookie.trim().split('=');
-                if (cookieName === name) {
-                    return cookieValue;
-                }
-            }
-            return '';
-        }
-
         function showForm() {
             const welcomeMsg = document.getElementById('welcome-msg');
             if (welcomeMsg) {
@@ -70,15 +60,13 @@
         }
 
         function deleteCookiesAndShowForm() {
-            const current = new Date().toUTCString();
-
-            document.cookie = 'firstname=; expires=${current}';
-            document.cookie = 'email=; expires=${current}';
+            Cookies.remove('firstname');
+            Cookies.remove('email');
             showForm();
         }
 
         function showWelcomeMessageOrForm() {
-            const firstname = getCookie('firstname');
+            const firstname = Cookies.get('firstname');
             if (firstname) {
                 const welcomeMsg = document.createElement('div');
                 welcomeMsg.id = 'welcome-msg';
